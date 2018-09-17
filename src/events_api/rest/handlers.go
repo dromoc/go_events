@@ -8,16 +8,19 @@ import (
 	"strings"
 
 	"persistence"
+	"message_queue"
 	"github.com/gorilla/mux"
 )
 
 type eventServiceHandler struct {
 	dbhandler persistence.DatabaseHandler
+	eventEmitter message_queue.EventEmitter
 }
 
-func NewEventHandler(databasehandler persistence.DatabaseHandler) *eventServiceHandler {
+func NewEventHandler(databasehandler persistence.DatabaseHandler, eventEmitter message_queue.EventEmitter) *eventServiceHandler {
 	return &eventServiceHandler{
 		dbhandler: databasehandler,
+		eventEmitter: eventEmitter,
 	}
 }
 
@@ -81,14 +84,27 @@ func (eh *eventServiceHandler) NewEventHandler(w http.ResponseWriter, r *http.Re
 	err := json.NewDecoder(r.Body).Decode(&event)
 	if nil != err {
 		w.WriteHeader(500)
-		fmt.Fprintf(w, `{"error": "error occured while decoding event data %s"}`, err)
+		fmt.Fprintf(w, "error occured while decoding event data %s", err)
 		return
 	}
 	id, err := eh.dbhandler.AddEvent(event)
 	if nil != err {
 		w.WriteHeader(500)
-		fmt.Fprintf(w, `{"error": "error occured while persisting event %d %s"}`, id, err)
+		fmt.Fprintf(w, "error occured while persisting event %s", err)
 		return
 	}
-	fmt.Fprint(w, `{"id":%d}`, id)
+
+	msg := contracts.EventCreatedEvent{
+		ID:         hex.EncodeToString(id),
+		Name:       event.Name,
+		Start:      time.Unix(event.StartDate, 0),
+		End:        time.Unix(event.EndDate, 0),
+		LocationID: string(event.Location.ID),
+	}
+	eh.eventEmitter.Emit(&msg)
+
+	w.Header().Set("Content-Type", "application/json;charset=utf8")
+
+	w.WriteHeader(201)
+	json.NewEncoder(w).Encode(&event)
 }

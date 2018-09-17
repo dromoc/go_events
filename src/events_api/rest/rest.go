@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"github.com/gorilla/mux"
     "persistence"
+    "message_queue"
 )
 
-func ServeAPI(endpoint string, databasehandler persistence.DatabaseHandler) error {
-    handler := NewEventHandler(databasehandler)
+func ServeAPI(endpoint string, databasehandler persistence.DatabaseHandler, , eventEmitter message_queue.EventEmitter) error {
+    handler := NewEventHandler(databasehandler, eventEmitter)
     r := mux.NewRouter()
     eventsrouter := r.PathPrefix("/events").Subrouter()
 
