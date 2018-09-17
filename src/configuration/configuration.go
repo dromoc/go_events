@@ -19,13 +19,13 @@ var (
 )
 
 type ServiceConfig struct {
-	Databasetype      dblayer.DBTYPE 'json:"databasetype"'
-	DBConnection      string         'json:"dbconnection"'
-	RestfulEndpoint   string         'json:"restfulapi_endpoint"'
-	RestfulTLSEndPint string         'json:"restfulapi-tlsendpoint"'
-    MessageBrokerType   string         'json:"message_broker_type"'
-    AMQPMessageBroker   string         'json:"amqp_message_broker"'
-    KafkaMessageBrokers []string       'json:"kafka_message_brokers"'
+	Databasetype      dblayer.DBTYPE `json:"databasetype"`
+	DBConnection      string         `json:"dbconnection"`
+	RestfulEndpoint   string         `json:"restfulapi_endpoint"`
+	RestfulTLSEndPint string         `json:"restfulapi-tlsendpoint"`
+    MessageBrokerType   string         `json:"message_broker_type"`
+    AMQPMessageBroker   string         `json:"amqp_message_broker"`
+    KafkaMessageBrokers []string       `json:"kafka_message_brokers"`
 }
 
 func ExtractConfiguration(filename string) (ServiceConfig, error) {

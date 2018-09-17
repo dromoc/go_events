@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	amqphelper "github.com/martin-helmich/cloudnativego-backend/src/lib/helper/amqp"
-	"github.com/martin-helmich/cloudnativego-backend/src/lib/msgqueue"
+	amqphelper "helper/amqp"
+	"message_queue"
 	"github.com/streadway/amqp"
 )
 
@@ -18,7 +18,7 @@ type amqpEventEmitter struct {
 }
 
 type emittedEvent struct {
-	event     msgqueue.Event
+	event     message_queue.Event
 	errorChan chan error
 }
 
@@ -29,7 +29,7 @@ type emittedEvent struct {
 //   - AMQP_EXCHANGE; the name of the exchange to bind to
 //
 // For missing environment variables, this function will assume sane defaults.
-func NewAMQPEventEmitterFromEnvironment() (msgqueue.EventEmitter, error) {
+func NewAMQPEventEmitterFromEnvironment() (message_queue.EventEmitter, error) {
 	var url string
 	var exchange string
 

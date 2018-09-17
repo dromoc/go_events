@@ -7,7 +7,7 @@ import (
     "message_queue"
 )
 
-func ServeAPI(endpoint string, databasehandler persistence.DatabaseHandler, , eventEmitter message_queue.EventEmitter) error {
+func ServeAPI(endpoint string, databasehandler persistence.DatabaseHandler, eventEmitter message_queue.EventEmitter) error {
     handler := NewEventHandler(databasehandler, eventEmitter)
     r := mux.NewRouter()
     eventsrouter := r.PathPrefix("/events").Subrouter()

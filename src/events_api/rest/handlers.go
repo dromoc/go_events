@@ -6,10 +6,14 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-
+	"time"
+	
+	"github.com/gorilla/mux"
+	
+	"contracts"
 	"persistence"
 	"message_queue"
-	"github.com/gorilla/mux"
+
 )
 
 type eventServiceHandler struct {

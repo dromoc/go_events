@@ -9,10 +9,13 @@ import (
     "events_api/rest"
     "configuration"
     "persistence/dblayer"
-    "message_queue/amqp"
+    "message_queue"
+    message_queue_amqp "message_queue/amqp"
 )
 
 func main() {
+	var eventEmitter message_queue.EventEmitter
+
 	confPath := flag.String("conf", "./../configuration/config.json", "flag to set the path to the configuration json file")
 	flag.Parse()
 	//extract configuration
@@ -25,7 +28,7 @@ func main() {
 			panic(err)
 		}
 
-		eventEmitter, err = msgqueue_amqp.NewAMQPEventEmitter(conn, "events")
+		eventEmitter, err = message_queue_amqp.NewAMQPEventEmitter(conn, "events")
 		if err != nil {
 			panic(err)
 		}

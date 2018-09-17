@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"os"
 	"time"
+	"encoding/json"
 
-	amqphelper "github.com/martin-helmich/cloudnativego-backend/src/lib/helper/amqp"
+	amqphelper "helper/amqp"
 	"github.com/streadway/amqp"
-
+	"contracts"
 	"message_queue"
 )
 
@@ -17,7 +18,6 @@ type amqpEventListener struct {
 	connection *amqp.Connection
 	exchange   string
 	queue      string
-	mapper     message_queue.EventMapper
 }
 
 // NewAMQPEventListenerFromEnvironment will create a new event listener from
@@ -59,7 +59,6 @@ func NewAMQPEventListener(conn *amqp.Connection, exchange string, queue string) 
 		connection: conn,
 		exchange:   exchange,
 		queue:      queue,
-		mapper:     message_queue.NewEventMapper(),
 	}
 
 	err := listener.setup()
@@ -133,11 +132,27 @@ func (l *amqpEventListener) Listen(eventNames ...string) (<-chan message_queue.E
 				continue
 			}
 
-			event, err := l.mapper.MapEvent(eventName, msg.Body)
+			/*event, err := l.mapper.MapEvent(eventName, msg.Body)
 			if err != nil {
 				errors <- fmt.Errorf("could not unmarshal event %s: %s", eventName, err)
 				msg.Nack(false, false)
 				continue
+			}*/
+			var event message_queue.Event 
+
+			switch eventName { 
+			case "event.created": 
+				event = new(contracts.EventCreatedEvent) 
+			default: 
+				errors <- fmt.Errorf("event type %s is unknown", eventName)
+				msg.Nack(false, false)
+				continue 
+			} 
+
+			err := json.Unmarshal(msg.Body, event) 
+			if err != nil { 
+				errors <- err 
+				continue 
 			}
 
 			events <- event
@@ -146,8 +161,4 @@ func (l *amqpEventListener) Listen(eventNames ...string) (<-chan message_queue.E
 	}()
 
 	return events, errors, nil
-}
-
-func (l *amqpEventListener) Mapper() message_queue.EventMapper {
-	return l.mapper
 }
