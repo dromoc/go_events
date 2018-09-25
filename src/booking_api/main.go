@@ -5,12 +5,14 @@ import (
 	"flag"
 
 	"github.com/streadway/amqp"
+	"github.com/Shopify/sarama"
 
 	"booking_api/listener"
 	"booking_api/rest"
 	"configuration"
 	"message_queue"
 	message_queue_amqp "message_queue/amqp"
+	"message_queue/kafka"
 	"persistence/dblayer"
 )
 
@@ -29,6 +31,7 @@ func main() {
 
 	//extract configuration
 	config, _ := configuration.ExtractConfiguration(*confPath)
+	fmt.Printf("MessageBrokerType: %s", config.MessageBrokerType)
 
 	switch config.MessageBrokerType {
 	case "amqp":
@@ -40,7 +43,17 @@ func main() {
 
 		eventEmitter, err = message_queue_amqp.NewAMQPEventEmitter(conn, "events")
 		panicIfErr(err)
+	case "kafka":
+		conf := sarama.NewConfig()
+		conf.Producer.Return.Successes = true
+		conn, err := sarama.NewClient(config.KafkaMessageBrokers, conf)
+		panicIfErr(err)
 
+		eventListener, err = kafka.NewKafkaEventListener(conn, []int32{})
+		panicIfErr(err)
+
+		eventEmitter, err = kafka.NewKafkaEventEmitter(conn)
+		panicIfErr(err)
 	default:
 		panic("Bad message broker type: " + config.MessageBrokerType)
 	}

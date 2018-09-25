@@ -5,4 +5,5 @@ package message_queue
 // event emitter and listeners can infer an event's name.
 type Event interface {
 	EventName() string
+	PartitionKey() string
 }

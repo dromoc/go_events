@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"log"
 	"github.com/streadway/amqp"
+	"github.com/Shopify/sarama"
 
     "events_api/rest"
     "configuration"
     "persistence/dblayer"
     "message_queue"
     message_queue_amqp "message_queue/amqp"
+    "message_queue/kafka"
 )
 
 func main() {
@@ -32,7 +34,18 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+	case "kafka":
+		conf := sarama.NewConfig()
+		conf.Producer.Return.Successes = true
+		conn, err := sarama.NewClient(config.KafkaMessageBrokers, conf)
+		if err != nil {
+			panic(err)
+		}
 
+		eventEmitter, err = kafka.NewKafkaEventEmitter(conn)
+		if err != nil {
+			panic(err)
+		}
 	default:
 		panic("Bad message broker type: " + config.MessageBrokerType)
 	}
