@@ -86,15 +86,39 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/components/hello.tsx":
-/*!**********************************!*\
-  !*** ./src/components/hello.tsx ***!
-  \**********************************/
+/***/ "./src/components/event_list.tsx":
+/*!***************************************!*\
+  !*** ./src/components/event_list.tsx ***!
+  \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __extends = (this && this.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    }\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar React = __webpack_require__(/*! react */ \"react\");\nvar Hello = /** @class */ (function (_super) {\n    __extends(Hello, _super);\n    function Hello() {\n        return _super !== null && _super.apply(this, arguments) || this;\n    }\n    Hello.prototype.render = function () {\n        return React.createElement(\"div\", null,\n            \"Hello \",\n            this.props.name,\n            \"!\");\n    };\n    return Hello;\n}(React.Component));\nexports.Hello = Hello;\n\n\n//# sourceURL=webpack:///./src/components/hello.tsx?");
+eval("\nvar __extends = (this && this.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    }\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar event_list_item_1 = __webpack_require__(/*! ./event_list_item */ \"./src/components/event_list_item.tsx\");\nvar React = __webpack_require__(/*! react */ \"react\");\nvar EventList = /** @class */ (function (_super) {\n    __extends(EventList, _super);\n    function EventList() {\n        return _super !== null && _super.apply(this, arguments) || this;\n    }\n    EventList.prototype.render = function () {\n        var items = this.props.events.map(function (e) {\n            return React.createElement(event_list_item_1.EventListItem, { event: e });\n        });\n        return React.createElement(\"table\", { className: \"table\" },\n            React.createElement(\"thead\", null,\n                React.createElement(\"tr\", null,\n                    React.createElement(\"th\", null, \"Event\"),\n                    React.createElement(\"th\", null, \"Where\"),\n                    React.createElement(\"th\", { colSpan: 2 }, \"When (start/end)\"),\n                    React.createElement(\"th\", null, \"Actions\"))),\n            React.createElement(\"tbody\", null, items));\n    };\n    return EventList;\n}(React.Component));\nexports.EventList = EventList;\n\n\n//# sourceURL=webpack:///./src/components/event_list.tsx?");
+
+/***/ }),
+
+/***/ "./src/components/event_list_container.tsx":
+/*!*************************************************!*\
+  !*** ./src/components/event_list_container.tsx ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __extends = (this && this.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    }\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar React = __webpack_require__(/*! react */ \"react\");\nvar event_list_1 = __webpack_require__(/*! ./event_list */ \"./src/components/event_list.tsx\");\nvar EventListContainer = /** @class */ (function (_super) {\n    __extends(EventListContainer, _super);\n    function EventListContainer(p) {\n        var _this = _super.call(this, p) || this;\n        _this.state = {\n            loading: true,\n            events: []\n        };\n        console.log(\"getting events from: [\" + p.eventListURL + \"/events\" + \"]\");\n        fetch(p.eventListURL + \"/events\", { method: \"GET\" })\n            .then(function (response) { return response.json(); })\n            .then(function (events) {\n            _this.setState({\n                loading: false,\n                events: events\n            });\n        });\n        return _this;\n    }\n    EventListContainer.prototype.render = function () {\n        if (this.state.loading) {\n            return React.createElement(\"div\", null, \"Loading...\");\n        }\n        return React.createElement(event_list_1.EventList, { events: this.state.events });\n    };\n    return EventListContainer;\n}(React.Component));\nexports.EventListContainer = EventListContainer;\n\n\n//# sourceURL=webpack:///./src/components/event_list_container.tsx?");
+
+/***/ }),
+
+/***/ "./src/components/event_list_item.tsx":
+/*!********************************************!*\
+  !*** ./src/components/event_list_item.tsx ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nvar __extends = (this && this.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    }\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar React = __webpack_require__(/*! react */ \"react\");\nvar EventListItem = /** @class */ (function (_super) {\n    __extends(EventListItem, _super);\n    function EventListItem() {\n        return _super !== null && _super.apply(this, arguments) || this;\n    }\n    EventListItem.prototype.render = function () {\n        var start = new Date(this.props.event.StartDate * 1000);\n        var end = new Date(this.props.event.EndDate * 1000);\n        return React.createElement(\"tr\", null,\n            React.createElement(\"td\", null, this.props.event.Name),\n            React.createElement(\"td\", null, this.props.event.Location.Name),\n            React.createElement(\"td\", null, start.toLocaleDateString()),\n            React.createElement(\"td\", null, end.toLocaleDateString()),\n            React.createElement(\"td\", null));\n    };\n    return EventListItem;\n}(React.Component));\nexports.EventListItem = EventListItem;\n\n\n//# sourceURL=webpack:///./src/components/event_list_item.tsx?");
 
 /***/ }),
 
@@ -106,7 +130,7 @@ eval("\nvar __extends = (this && this.__extends) || (function () {\n    var exte
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar React = __webpack_require__(/*! react */ \"react\");\nvar ReactDOM = __webpack_require__(/*! react-dom */ \"react-dom\");\nvar hello_1 = __webpack_require__(/*! ./components/hello */ \"./src/components/hello.tsx\");\nReactDOM.render(React.createElement(\"div\", { className: \"container\" },\n    React.createElement(\"h1\", null, \"MyEvents\"),\n    React.createElement(hello_1.Hello, { name: \"World\" })), document.getElementById(\"myevents-app\"));\n\n\n//# sourceURL=webpack:///./src/index.tsx?");
+eval("\nvar __extends = (this && this.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    }\n    return function (d, b) {\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\nObject.defineProperty(exports, \"__esModule\", { value: true });\nvar React = __webpack_require__(/*! react */ \"react\");\nvar ReactDOM = __webpack_require__(/*! react-dom */ \"react-dom\");\nvar event_list_container_1 = __webpack_require__(/*! ./components/event_list_container */ \"./src/components/event_list_container.tsx\");\nvar App = /** @class */ (function (_super) {\n    __extends(App, _super);\n    function App() {\n        return _super !== null && _super.apply(this, arguments) || this;\n    }\n    App.prototype.render = function () {\n        return React.createElement(\"div\", { className: \"container\" },\n            React.createElement(\"h1\", null, \"MyEvents\"),\n            React.createElement(event_list_container_1.EventListContainer, { eventListURL: \"http://localhost:8181\" }));\n    };\n    return App;\n}(React.Component));\nReactDOM.render(React.createElement(App, null), document.getElementById(\"myevents-app\"));\n\n\n//# sourceURL=webpack:///./src/index.tsx?");
 
 /***/ }),
 

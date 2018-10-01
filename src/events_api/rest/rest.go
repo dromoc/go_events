@@ -3,6 +3,7 @@ package rest
 import (
 	"net/http"
 	"github.com/gorilla/mux"
+    "github.com/gorilla/handlers"
     "persistence"
     "message_queue"
 )
@@ -16,5 +17,6 @@ func ServeAPI(endpoint string, databasehandler persistence.DatabaseHandler, even
     eventsrouter.Methods("GET").Path("").HandlerFunc(handler.AllEventHandler)
     eventsrouter.Methods("POST").Path("").HandlerFunc(handler.NewEventHandler)
 
-	return http.ListenAndServe(endpoint, r)
+    server := handlers.CORS()(r)
+	return http.ListenAndServe(endpoint, server)
 }

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-	"time"
+//	"time"
 	
 	"github.com/gorilla/mux"
 	
@@ -101,8 +101,8 @@ func (eh *eventServiceHandler) NewEventHandler(w http.ResponseWriter, r *http.Re
 	msg := contracts.EventCreatedEvent{
 		ID:         hex.EncodeToString(id),
 		Name:       event.Name,
-		Start:      time.Unix(event.StartDate, 0),
-		End:        time.Unix(event.EndDate, 0),
+		//Start:      time.Unix(event.StartDate, 0),
+		//End:        time.Unix(event.EndDate, 0),
 		LocationID: string(event.Location.ID),
 	}
 	eh.eventEmitter.Emit(&msg)
