@@ -3,7 +3,7 @@ import {EventList} from "./event_list";
 import {Event} from "../models/event"; 
 
 export interface EventListContainerProps { 
-	eventListURL: string; 
+	eventServiceURL: string
 } 
 
 export interface EventListContainerState { 
@@ -21,8 +21,8 @@ export class EventListContainer extends React.Component<EventListContainerProps,
 			events: [] 
 		}; 
 
-		console.log("getting events from: [" + p.eventListURL + "/events" + "]");
-		fetch(p.eventListURL + "/events", {method: "GET"}) 
+		console.log("getting events from: [" + p.eventServiceURL + "/events" + "]");
+		fetch(p.eventServiceURL + "/events", {method: "GET"}) 
 		.then<Event[]>(response =>response.json()) 
 		.then(events =>{ 
 			this.setState({ 
